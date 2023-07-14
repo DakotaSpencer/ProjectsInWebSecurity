@@ -23,11 +23,11 @@ set @roleId = (select RoleId from Roles where Role = 'admin');
 insert into UserRoles (UserId, RoleId) values (@userId, @roleId);
 
 -- test data
--- select * from users;
--- select * from roles;
--- select * from userroles;
+select * from users;
+select * from roles;
+select * from userroles;
 
-select u.userid, u.username, r.role
-from users u 
-	left join userroles ur on u.userid = ur.userid
-	left join roles r on r.roleid = ur.roleid;
+-- select u.userid, u.username, r.role
+-- from users u 
+-- 	left join userroles ur on u.userid = ur.userid
+-- 	left join roles r on r.roleid = ur.roleid;
