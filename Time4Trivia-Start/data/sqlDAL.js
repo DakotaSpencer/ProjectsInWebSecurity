@@ -97,11 +97,12 @@ exports.getAllUsers = async function () {
 }
 
 /**
- * @param {*} userId the userId of the user to find
+ * @param {number} userId the userId of the user to find
  * @returns a User model or null if not found
  */
 exports.getUserById = async function (userId) {
     let user = null;
+
 
     const con = await mysql.createConnection(sqlConfig);
 
@@ -133,6 +134,10 @@ exports.getUserById = async function (userId) {
     return user;
 }
 
+/**
+ * @param {number} userId the username of the user to find
+ * @returns a User model or null if not found
+ */
 exports.deleteUserById = async function (userId) {
     let result = new Result();
 
@@ -161,7 +166,7 @@ exports.deleteUserById = async function (userId) {
 }
 
 /**
- * @param {*} username the username of the user to find
+ * @param {string} username the username of the user to find
  * @returns a User model or null if not found
  */
 exports.getUserByUsername = async function (username) {
@@ -199,7 +204,7 @@ exports.getUserByUsername = async function (username) {
 }
 
 /**
- * @param {*} userId the userId of the user to find roles for
+ * @param {number} userId the userId of the user to find roles for
  * @returns an array of role names
  */
 exports.getRolesByUserId = async function (userId) {
@@ -226,9 +231,9 @@ exports.getRolesByUserId = async function (userId) {
 }
 
 /**
- * @param {*} username 
- * @param {*} hashedPassword 
- * @param {*} email 
+ * @param {string} username 
+ * @param {string} hashedPassword 
+ * @param {string} email 
  * @returns a result object with status/message
  */
 exports.createUser = async function (username, hashedPassword, email, firstName, lastName) {
@@ -262,8 +267,8 @@ exports.createUser = async function (username, hashedPassword, email, firstName,
 
 /**
  * 
- * @param {*} userId 
- * @param {*} hashedPassword 
+ * @param {number} userId 
+ * @param {string} hashedPassword 
  * @returns a result object with status/message
  */
 exports.updateUserPassword = async function (userId, hashedPassword) {
@@ -290,9 +295,9 @@ exports.updateUserPassword = async function (userId, hashedPassword) {
 
 /**
  * 
- * @param {*} userId 
- * @param {*} firstName 
- * @param {*} lastName
+ * @param {number} userId 
+ * @param {string} firstName 
+ * @param {string} lastName
  * @returns a result object with status/message
  */
 exports.updateProfile = async function (userId, firstName, lastName) {
@@ -307,6 +312,209 @@ exports.updateProfile = async function (userId, firstName, lastName) {
         // console.log(r);
         result.status = STATUS_CODES.success;
         result.message = 'Profile updated';
+        return result;
+    } catch (err) {
+        console.log(err);
+
+        result.status = STATUS_CODES.failure;
+        result.message = err.message;
+        return result;
+    }
+}
+
+/**
+ * 
+ * @param {number} quantity
+ * @returns a result object with status/message
+ */
+exports.getLeaderboard = async function (quantity) {
+    results = [];
+
+    const con = await mysql.createConnection(sqlConfig);
+
+    try {
+        let sql = `select u.Username, l.Score from Leaderboard l join Users u on u.UserId = l.UserId order by l.Score desc limit ${quantity};`;
+
+        results = await con.query(sql);
+    } catch (err) {
+        console.log(err);
+    }finally{
+        con.end();
+    }
+
+    return results;
+}
+
+/**
+ * 
+ * @param {number} userId
+ * @param {boolean} isEnabled
+ * @returns a result object with status/message
+ */
+exports.setIsUserEnabled = async function (userId, isEnabled) {
+    let result = new Result();
+
+    const con = await mysql.createConnection(sqlConfig);
+
+    try {
+        let sql = `update Users set IsEnabled=${isEnabled} where userId = '${userId}'`;
+        const userResult = await con.query(sql);
+
+        // console.log(r);
+        result.status = STATUS_CODES.success;
+        result.message = `Account ID ${userId} IsEnabled set to ${isEnabled}`;
+        return result;
+    } catch (err) {
+        console.log(err);
+
+        result.status = STATUS_CODES.failure;
+        result.message = err.message;
+        return result;
+    }
+}
+
+/**
+ * 
+ * @param {number} userId
+ * @returns a result object with status/message
+ */
+exports.getUserScore = async function (userId) {
+    let result = new Result();
+
+    const con = await mysql.createConnection(sqlConfig);
+
+    try {
+        let sql = `select Score from Leaderboard where userId = ${userId}`;
+        const userResult = await con.query(sql);
+        const score = userResult[0][0].Score;
+        // console.log(r);
+        result.status = STATUS_CODES.success;
+        result.message = `Leaderboard`;
+        result.data.Score = score;
+        return result;
+    } catch (err) {
+        console.log(err);
+
+        result.status = STATUS_CODES.failure;
+        result.message = err.message;
+        return result;
+    }
+}
+
+/**
+ * 
+ * @param {number} userId
+ * @param {number} gameScore
+ * @returns a result object with status/message
+ */
+exports.updateUserScore = async function (userId, gameScore) {
+    let result = new Result();
+
+    const con = await mysql.createConnection(sqlConfig);
+
+    try {
+
+        let currScore = (await getUserScore(userId)).data.Score;
+        
+        if (gameScore < currScore) {
+            result.status = STATUS_CODES.success;
+            result.message = `New Score Not New Highscore`;
+            return result
+        }
+
+        let sql = `update Users set IsEnabled=${isEnabled} where userId = '${userId}'`;
+        const userResult = await con.query(sql);
+
+        // console.log(r);
+        result.status = STATUS_CODES.success;
+        result.message = `New Highscore set to ${gameScore}`;
+        return result;
+    } catch (err) {
+        console.log(err);
+
+        result.status = STATUS_CODES.failure;
+        result.message = err.message;
+        return result;
+    }
+}
+
+/**
+ * 
+ * @param {string} question
+ * @param {string} correctAnswer
+ * @param {string} incorrectAnswer1
+ * @param {string} incorrectAnswer2
+ * @param {string} incorrectAnswer3
+ * @returns a result object with status/message
+ */
+exports.addNewQuestion = async function (question, correctAnswer, incorrectAnswer1, incorrectAnswer2, incorrectAnswer3) {
+    let result = new Result();
+
+    const con = await mysql.createConnection(sqlConfig);
+
+    try {
+        let sql = `insert into Questions (Question, CorrectAnswer, IncorrectOne, IncorrectTwo, IncorrectThree, Category) values (${question}, ${correctAnswer}, ${incorrectAnswer1}, ${incorrectAnswer2}, ${incorrectAnswer3},)`;
+        const userResult = await con.query(sql);
+        // console.log(r);
+        result.status = STATUS_CODES.success;
+        result.message = `Question Submitted`;
+        return result;
+    } catch (err) {
+        console.log(err);
+
+        result.status = STATUS_CODES.failure;
+        result.message = err.message;
+        return result;
+    }
+}
+
+/**
+ * 
+ * @param {number} questionId
+ * @param {boolean} approved
+ * @returns a result object with status/message
+ */
+exports.setQuestionApproved = async function (questionId, approved) {
+    let result = new Result();
+
+    const con = await mysql.createConnection(sqlConfig);
+
+    try {
+        let sql = `update Users set Approved=${approved} where userId = '${questionId}'`;
+        const userResult = await con.query(sql);
+
+        // console.log(r);
+        result.status = STATUS_CODES.success;
+        result.message = `Question ID ${questionId} Approved set to ${approved}`;
+        return result;
+    } catch (err) {
+        console.log(err);
+
+        result.status = STATUS_CODES.failure;
+        result.message = err.message;
+        return result;
+    }
+}
+
+/**
+ * 
+ * @param {number} total
+ * @returns a result object with status/message
+ */
+exports.getQuestions = async function (total) {
+    let result = new Result();
+
+    const con = await mysql.createConnection(sqlConfig);
+
+    try {
+        let sql = `select * from Questions where Approved=true`;
+        const userResult = await con.query(sql);
+        let questions = userResult[0]
+        console.log(questions)
+
+        // console.log(r);
+        result.status = STATUS_CODES.success;
+        result.message = `Questions`;
         return result;
     } catch (err) {
         console.log(err);

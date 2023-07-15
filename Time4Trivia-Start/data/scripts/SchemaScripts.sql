@@ -15,7 +15,7 @@ create table if not exists Users(
 	Email varchar(100) NOT NULL,
 	FirstName varchar(100) NOT NULL,
 	LastName varchar(100) NOT NULL,
-	Enabled boolean NOT NULL default true,
+	IsEnabled boolean NOT NULL default true,
 	PRIMARY KEY (UserId),
 	CONSTRAINT Users_UniqueEmail UNIQUE(Email),
 	CONSTRAINT Users_UniqueUsername UNIQUE(Username)
@@ -44,7 +44,6 @@ create table if not exists Questions(
     IncorrectOne text NOT NULL,
     IncorrectTwo text NOT NULL,
     IncorrectThree text NOT NULL,
-    Category text NOT NULL,
     Approved boolean NOT NULL default false,
     PRIMARY KEY (QuestionId)
 );
