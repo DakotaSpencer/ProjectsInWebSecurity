@@ -24,4 +24,12 @@ router.get('/leaderboard', function(req, res, next) {
   res.render('leaderboard', { title: 'Time 4 Trivia', user: req.session.user, isAdmin: req.cookies.isAdmin, leaders: leaders });
 });
 
+router.get('/score', function(req, res, next){
+  let finalScore=[{
+    name: "User", score: 1234
+  }];
+
+  res.render('score', {title: 'Time 4 Trivia', score: finalScore});
+})
+
 module.exports = router;
