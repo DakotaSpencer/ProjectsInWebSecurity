@@ -32,4 +32,16 @@ router.get('/score', function(req, res, next){
   res.render('score', {title: 'Time 4 Trivia', score: finalScore});
 })
 
+router.get('/submit', function(req, res, next){
+  let question={
+    query: req.body.question,
+    answers:[
+      {answer1: req.body.answers[0]},
+      {answer2: req.body.answers[1]},
+      {answer3: req.body.answers[2]},
+      {answer4: req.body.answers[3]},
+    ]
+  }
+})
+
 module.exports = router;
