@@ -3,3 +3,7 @@ extends layout
 block content
     h1 Play Time 4 Trivia!
     button Go
+    if questions
+        #{JSON.stringify(questions[0].Question)}
+    else
+        p No questions gotten yet.

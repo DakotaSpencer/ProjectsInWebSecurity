@@ -57,7 +57,7 @@ exports.getAllUsers = async function () {
 /**
  * @returns and array of user models
  */
- exports.getUsersByRole = async function (role) {
+exports.getUsersByRole = async function (role) {
     users = [];
 
     const con = await mysql.createConnection(sqlConfig);
@@ -501,7 +501,7 @@ exports.setQuestionApproved = async function (questionId, approved) {
  * @param {number} total
  * @returns a result object with status/message
  */
-exports.getQuestions = async function (total) {
+exports.getQuestions = async function () {
     let result = new Result();
 
     const con = await mysql.createConnection(sqlConfig);
@@ -510,12 +510,11 @@ exports.getQuestions = async function (total) {
         let sql = `select * from Questions where Approved=true`;
         const userResult = await con.query(sql);
         let questions = userResult[0]
-        console.log(questions)
-
+        let jsonData = questions
         // console.log(r);
         result.status = STATUS_CODES.success;
         result.message = `Questions`;
-        return result;
+        return jsonData;
     } catch (err) {
         console.log(err);
 

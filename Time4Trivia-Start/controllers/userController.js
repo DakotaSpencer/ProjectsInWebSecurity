@@ -12,9 +12,6 @@ exports.getUsers = async function (role = 'user') {
     let results = await sqlDAL.getUsersByRole(role);
     // console.log('getUsers');
     // console.log(results);
-
-    await sqlDAL.getQuestions(1);
-
     return results;
 }
 
