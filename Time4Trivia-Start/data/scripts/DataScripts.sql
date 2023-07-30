@@ -14,7 +14,7 @@ insert into Questions (Question, CorrectAnswer, IncorrectOne, IncorrectTwo, Inco
 insert into Questions (Question, CorrectAnswer, IncorrectOne, IncorrectTwo, IncorrectThree, Approved) values ("What country has the longest street in the world?","Canada","India","Japan","America",1);
 insert into Questions (Question, CorrectAnswer, IncorrectOne, IncorrectTwo, IncorrectThree, Approved) values ("What year was the mobile phone invented?","1973","1977","1876","1967",1);
 insert into Questions (Question, CorrectAnswer, IncorrectOne, IncorrectTwo, IncorrectThree, Approved) values ("Who invented the computer mouse?","Douglas Engelbart","Rene Somner","Ralph Benjamin","Charles Babbage",1);
-insert into Questions (Question, CorrectAnswer, IncorrectOne, IncorrectTwo, IncorrectThree, Approved) values ("What is the 3rd largest cirt in China?","Tianjin","Beijing","Shanghai","Wuhan",1);
+insert into Questions (Question, CorrectAnswer, IncorrectOne, IncorrectTwo, IncorrectThree, Approved) values ("What is the 3rd largest city in China?","Tianjin","Beijing","Shanghai","Wuhan",1);
 insert into Questions (Question, CorrectAnswer, IncorrectOne, IncorrectTwo, IncorrectThree, Approved) values ("How many episodes of One Piece are there?","1053","1196","Are we counting filler?","1216",1);
 insert into Questions (Question, CorrectAnswer, IncorrectOne, IncorrectTwo, IncorrectThree, Approved) values ("How many questions are in this quiz?","10","Uh...","15","26",1);
 

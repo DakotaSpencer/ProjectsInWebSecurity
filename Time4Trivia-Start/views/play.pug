@@ -1,24 +1,190 @@
 extends layout
 
 block content
-    h1 Play Time 4 Trivia!
-    button Go
-    if questionArray
-        h1 Question (#{index + 1}) 
-        h2 #{questionArray[0].Question}
-        form(action="") 
-            input(type='radio' value=(questionArray[0].CorrectAnswer)) 
-            label A: #{questionArray[0].CorrectAnswer}
-            br
-            input(type='radio' value=(questionArray[0].IncorrectOne)) 
-            label B: #{questionArray[0].IncorrectOne}
-            br
-            input(type='radio' value=(questionArray[0].IncorrectTwo)) 
-            label C: #{questionArray[0].IncorrectTwo}
-            br
-            input(type='radio' value=(questionArray[0].IncorrectThree)) 
-            label D: #{questionArray[0].IncorrectThree}
-            br
-            button Submit
-    else
-        p No questions gotten yet.
+
+    - var test_ques = `#{questionArray}`
+    
+    div#play
+        #question.question Loading questions
+        .ansdiv
+            #answer11.answer
+                p#answer1 Loading the answers
+            #answer22.answer
+                p#answer2 Loading the answers
+            #answer33.answer
+                p#answer3 Loading the answers
+            #answer44.answer
+                p#answer4 Loading the answers
+        div
+            p#score.question Score: 0/0
+    div#finished
+        
+    script.
+        const ques = document.getElementById('question');
+        const a1 = document.getElementById('answer1')
+        const a2 = document.getElementById('answer2')
+        const a3 = document.getElementById('answer3')
+        const a4 = document.getElementById('answer4')
+        const a11 = document.getElementById('answer11')
+        const a22 = document.getElementById('answer22')
+        const a33 = document.getElementById('answer33')
+        const a44 = document.getElementById('answer44')
+        const score_el = document.getElementById('score')
+        const answers = [a1,a2,a3,a4]
+
+        let score = 0;
+        let ques_num = 0;
+        //- let data = questionArray;
+        let correctanswer;
+        let loaded = false;
+
+        let ques_data = [
+            {
+                Question: `#{questionArray[0].Question}`,
+                CorrectAnswer: `#{questionArray[0].CorrectAnswer}`,
+                IncorrectOne: `#{questionArray[0].IncorrectOne}`,
+                IncorrectTwo: `#{questionArray[0].IncorrectTwo}`,
+                IncorrectThree: `#{questionArray[0].IncorrectThree}`,
+            },
+            {
+                Question: `#{questionArray[1].Question}`,
+                CorrectAnswer: `#{questionArray[1].CorrectAnswer}`,
+                IncorrectOne: `#{questionArray[1].IncorrectOne}`,
+                IncorrectTwo: `#{questionArray[1].IncorrectTwo}`,
+                IncorrectThree: `#{questionArray[1].IncorrectThree}`,
+            },
+            {
+                Question: `#{questionArray[2].Question}`,
+                CorrectAnswer: `#{questionArray[2].CorrectAnswer}`,
+                IncorrectOne: `#{questionArray[2].IncorrectOne}`,
+                IncorrectTwo: `#{questionArray[2].IncorrectTwo}`,
+                IncorrectThree: `#{questionArray[2].IncorrectThree}`,
+            },
+            {
+                Question: `#{questionArray[3].Question}`,
+                CorrectAnswer: `#{questionArray[3].CorrectAnswer}`,
+                IncorrectOne: `#{questionArray[3].IncorrectOne}`,
+                IncorrectTwo: `#{questionArray[3].IncorrectTwo}`,
+                IncorrectThree: `#{questionArray[3].IncorrectThree}`,
+            },
+            {
+                Question: `#{questionArray[4].Question}`,
+                CorrectAnswer: `#{questionArray[4].CorrectAnswer}`,
+                IncorrectOne: `#{questionArray[4].IncorrectOne}`,
+                IncorrectTwo: `#{questionArray[4].IncorrectTwo}`,
+                IncorrectThree: `#{questionArray[4].IncorrectThree}`,
+            },
+            {
+                Question: `#{questionArray[5].Question}`,
+                CorrectAnswer: `#{questionArray[5].CorrectAnswer}`,
+                IncorrectOne: `#{questionArray[5].IncorrectOne}`,
+                IncorrectTwo: `#{questionArray[5].IncorrectTwo}`,
+                IncorrectThree: `#{questionArray[5].IncorrectThree}`,
+            },
+            {
+                Question: `#{questionArray[6].Question}`,
+                CorrectAnswer: `#{questionArray[6].CorrectAnswer}`,
+                IncorrectOne: `#{questionArray[6].IncorrectOne}`,
+                IncorrectTwo: `#{questionArray[6].IncorrectTwo}`,
+                IncorrectThree: `#{questionArray[6].IncorrectThree}`,
+            },
+            {
+                Question: `#{questionArray[7].Question}`,
+                CorrectAnswer: `#{questionArray[7].CorrectAnswer}`,
+                IncorrectOne: `#{questionArray[7].IncorrectOne}`,
+                IncorrectTwo: `#{questionArray[7].IncorrectTwo}`,
+                IncorrectThree: `#{questionArray[7].IncorrectThree}`,
+            },
+            {
+                Question: `#{questionArray[8].Question}`,
+                CorrectAnswer: `#{questionArray[8].CorrectAnswer}`,
+                IncorrectOne: `#{questionArray[8].IncorrectOne}`,
+                IncorrectTwo: `#{questionArray[8].IncorrectTwo}`,
+                IncorrectThree: `#{questionArray[8].IncorrectThree}`,
+            },
+            {
+                Question: `#{questionArray[9].Question}`,
+                CorrectAnswer: `#{questionArray[9].CorrectAnswer}`,
+                IncorrectOne: `#{questionArray[9].IncorrectOne}`,
+                IncorrectTwo: `#{questionArray[9].IncorrectTwo}`,
+                IncorrectThree: `#{questionArray[9].IncorrectThree}`,
+            },
+        ]
+
+        ques.innerHTML = ques_data[0].Question;
+
+        let shuffledArray = answers.sort(() => 0.5 -Math.random());
+
+        shuffledArray[0].innerHTML = ques_data[0].IncorrectOne;
+        shuffledArray[1].innerHTML = ques_data[0].IncorrectTwo;
+        shuffledArray[2].innerHTML = ques_data[0].IncorrectThree;
+        shuffledArray[3].innerHTML = ques_data[0].CorrectAnswer;
+        correctanswer = ques_data[0].CorrectAnswer
+        loaded = true;
+
+        let next_question = () => {
+            ques.innerHTML = ques_data[ques_num].Question;
+            let shuffledArray = answers.sort(() => 0.5 -Math.random());
+            
+            shuffledArray[0].innerHTML = ques_data[ques_num].IncorrectOne;
+            shuffledArray[0].innerText = shuffledArray[0].innerHTML.valueOf();
+            shuffledArray[1].innerHTML = ques_data[ques_num].IncorrectTwo;
+            shuffledArray[1].innerText = shuffledArray[1].innerHTML.valueOf();
+            shuffledArray[2].innerHTML = ques_data[ques_num].IncorrectThree;
+            shuffledArray[2].innerText = shuffledArray[2].innerHTML.valueOf();
+            shuffledArray[3].innerHTML = ques_data[ques_num].CorrectAnswer;
+            shuffledArray[3].innerText = shuffledArray[3].innerHTML.valueOf();
+            correctanswer = ques_data[ques_num].CorrectAnswer;
+        }
+
+        let HTML_text_code_decoder = (html) => {
+            var textarea = document.createElement('textarea');
+            textarea.innerHTML = html;
+            return textarea.value;
+        };
+
+        function checkAnswer (e) {
+            let elementId = e.target.id.toString();
+            let guess;
+            if (!loaded){
+                return
+            }
+
+            if (elementId[6] === "1") {
+                guess = a1.innerHTML.toString()
+            } else if (elementId[6] === "2") {
+                guess = a2.innerHTML.toString()
+            } else if (elementId[6] === "3") {
+                guess = a3.innerHTML.toString()
+            } else if (elementId[6] === "4") {
+                guess = a4.innerHTML.toString()
+            }
+
+            if (ques_num <= 9) {
+                if (guess === HTML_text_code_decoder(correctanswer)) {
+                    // console.log("Correct Answer")
+                    score++;
+                    ques_num++;
+                } else {
+                    // console.log("Incorrect Answer")
+                    ques_num++;
+                }
+
+                score_el.innerText = `Score: ${score}/${ques_num}`
+                if (ques_num < 10) {
+                    next_question();
+                } else {
+                    // TODO: Add score to DB
+                    document.getElementById('play').remove();
+                    let fin_div = document.getElementById('finished')
+                    fin_div.style.visibility = "visible";
+                    fin_div.innerHTML = `<h1>Your Score: ${score}<h1>
+                    <button onclick=document.location.reload()>Play Again</button>`
+                }
+            }
+        }
+
+        a11.addEventListener('click', checkAnswer)
+        a22.addEventListener('click', checkAnswer)
+        a33.addEventListener('click', checkAnswer)
+        a44.addEventListener('click', checkAnswer)

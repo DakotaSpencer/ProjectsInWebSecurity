@@ -2,11 +2,11 @@ create database if not exists Time4Trivia;
 
 use Time4Trivia;
 
-drop table if exists UserRoles;
+drop table if exists Leaderboard;
 drop table if exists Users;
+drop table if exists UserRoles;
 drop table if exists Roles;
 drop table if exists Questions;
-drop table if exists Leaderboard;
 
 create table if not exists Users(
 	UserId int NOT NULL AUTO_INCREMENT,

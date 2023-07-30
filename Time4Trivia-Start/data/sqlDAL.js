@@ -501,13 +501,13 @@ exports.setQuestionApproved = async function (questionId, approved) {
  * @param {number} total
  * @returns a result object with status/message
  */
-exports.getQuestions = async function () {
+exports.getQuestions = async function (total) {
     let result = new Result();
 
     const con = await mysql.createConnection(sqlConfig);
 
     try {
-        let sql = `select * from Questions where Approved=true`;
+        let sql = `select * from Questions where Approved=true ORDER BY RAND() LIMIT ${total};`;
         const userResult = await con.query(sql);
         let questions = userResult[0]
         let jsonData = questions

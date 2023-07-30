@@ -3,11 +3,11 @@ const { getQuestions } = require('../controllers/gameController');
 const router = express.Router();
 
 router.get('/play', async function(req, res, next) {
-  let index=0;
   // TODO: Implement Game
-  let questions = await getQuestions()
-  
-  res.render('play', {user: req.session.user, questionArray: questions, index: index});
+  let questions = await getQuestions(10)
+
+  console.log(questions)
+  res.render('play', {user: req.session.user, questionArray: questions});
 });
 
 module.exports = router;
