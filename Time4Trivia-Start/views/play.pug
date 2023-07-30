@@ -3,7 +3,22 @@ extends layout
 block content
     h1 Play Time 4 Trivia!
     button Go
-    if questions
-        #{JSON.stringify(questions[0].Question)}
+    if questionArray
+        h1 Question (#{index + 1}) 
+        h2 #{questionArray[0].Question}
+        form(action="") 
+            input(type='radio' value=(questionArray[0].CorrectAnswer)) 
+            label A: #{questionArray[0].CorrectAnswer}
+            br
+            input(type='radio' value=(questionArray[0].IncorrectOne)) 
+            label B: #{questionArray[0].IncorrectOne}
+            br
+            input(type='radio' value=(questionArray[0].IncorrectTwo)) 
+            label C: #{questionArray[0].IncorrectTwo}
+            br
+            input(type='radio' value=(questionArray[0].IncorrectThree)) 
+            label D: #{questionArray[0].IncorrectThree}
+            br
+            button Submit
     else
         p No questions gotten yet.
