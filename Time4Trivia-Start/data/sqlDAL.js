@@ -9,8 +9,16 @@ const sqlConfig = {
     user: 'root',
     password: 'P@ssw0rd',
     database: 'Time4Trivia',
-    multipleStatements: true
+    multipleStatements: false
 };
+
+// const sqlConfig = {
+//     host: '10.0.30.112',
+//     user: 'groupone',
+//     password: 'S3cur3P4assw0rd!',
+//     database: 'Time4Trivia',
+//     multipleStatements: false
+// };
 
 /**
  * @returns and array of user models
@@ -334,7 +342,7 @@ exports.getLeaderboard = async function (quantity) {
 
     try {
         let sql = `select u.Username, l.Score from Leaderboard l join Users u on u.UserId = l.UserId order by l.Score desc limit ${quantity};`;
-
+        con.escape
         results = await con.query(sql);
     } catch (err) {
         console.log(err);
@@ -453,7 +461,7 @@ exports.addNewQuestion = async function (question, correctAnswer, incorrectAnswe
     const con = await mysql.createConnection(sqlConfig);
 
     try {
-        let sql = `insert into Questions (Question, CorrectAnswer, IncorrectOne, IncorrectTwo, IncorrectThree, Category) values (${question}, ${correctAnswer}, ${incorrectAnswer1}, ${incorrectAnswer2}, ${incorrectAnswer3},)`;
+        let sql = `insert into Questions (Question, CorrectAnswer, IncorrectOne, IncorrectTwo, IncorrectThree, Category) values (${con.escape(question)}, ${con.escape(correctAnswer)}, ${con.escape(incorrectAnswer1)}, ${con.escape(incorrectAnswer2)}, ${con.escape(incorrectAnswer3)},)`;
         const userResult = await con.query(sql);
         // console.log(r);
         result.status = STATUS_CODES.success;
