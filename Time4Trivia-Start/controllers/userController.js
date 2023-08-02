@@ -126,3 +126,7 @@ exports.getUserById = function (userId) {
 exports.deleteUserById = function (userId) {
     return sqlDAL.deleteUserById(userId);
 }
+
+exports.updateUserLeaderboard= function(userId, score){
+    return sqlDAL.updateUserScore(userId, score);
+}

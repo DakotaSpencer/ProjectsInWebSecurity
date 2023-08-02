@@ -414,21 +414,21 @@ exports.updateUserScore = async function (userId, gameScore) {
 
     try {
 
-        let currScore = (await getUserScore(userId)).data.Score;
+        // let currScore = (await getUserScore(userId)).data.Score;
         
-        if (gameScore < currScore) {
-            result.status = STATUS_CODES.success;
-            result.message = `New Score Not New Highscore`;
-            return result
-        }
+        // if (gameScore < currScore) {
+        //     result.status = STATUS_CODES.success;
+        //     result.message = `New Score Not New Highscore`;
+        //     return result
+        // }
 
-        let sql = `update Leaderboard set Score=${gameScore} where userId = '${userId}'`;
+        let sql = `update Leaderboard set Score='${gameScore}' where userId = '${userId}'`;
         const userResult = await con.query(sql);
 
         // console.log(r);
         result.status = STATUS_CODES.success;
         result.message = `New Highscore set to ${gameScore}`;
-        return result;
+        return userResult;
     } catch (err) {
         console.log(err);
 

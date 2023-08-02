@@ -16,7 +16,7 @@ block content
             #answer44.answer
                 button#answer4 Loading the answers
         div
-            p#score.question Score: 0/0
+            p#score.question(name='score') 
     div#finished
         
     script.
@@ -170,7 +170,7 @@ block content
                     ques_num++;
                 }
 
-                score_el.innerText = `Score: ${score}/${ques_num}`
+                score_el.innerText = `${score}`
                 if (ques_num < 10) {
                     next_question();
                 } else {
@@ -188,3 +188,5 @@ block content
         a22.addEventListener('click', checkAnswer)
         a33.addEventListener('click', checkAnswer)
         a44.addEventListener('click', checkAnswer)
+    form(action='/g/play', method='post')
+        input(type='submit', value='Save Score')
