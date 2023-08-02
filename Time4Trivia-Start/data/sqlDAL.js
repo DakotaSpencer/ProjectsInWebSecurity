@@ -422,7 +422,7 @@ exports.updateUserScore = async function (userId, gameScore) {
             return result
         }
 
-        let sql = `update Users set IsEnabled=${isEnabled} where userId = '${userId}'`;
+        let sql = `update Leaderboard set Score=${gameScore} where userId = '${userId}'`;
         const userResult = await con.query(sql);
 
         // console.log(r);
