@@ -3,6 +3,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const bodyParser = require('body-parser');
 
 var session = require('express-session');
 var sessionConfig = {
@@ -18,6 +19,8 @@ var adminRouter = require('./routes/admin');
 var gameRouter = require('./routes/game');
 
 var app = express();
+
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(session(sessionConfig));
 app.use(express.json());

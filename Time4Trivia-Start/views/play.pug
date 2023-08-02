@@ -179,7 +179,11 @@ block content
                     let fin_div = document.getElementById('finished')
                     fin_div.style.visibility = "visible";
                     fin_div.innerHTML = `<h1>Your Score: ${score}<h1>
-                    <button onclick=document.location.reload()>Play Again</button>`
+                    <button onclick=document.location.reload()>Play Again</button>
+                    <form action="/g/play" method="post">
+                        <input type="submit" value="Save Score" />
+                        <input type="hidden" id="score" name="score" value=${score} />
+                    </form>`
                 }
             }
         }
@@ -188,5 +192,4 @@ block content
         a22.addEventListener('click', checkAnswer)
         a33.addEventListener('click', checkAnswer)
         a44.addEventListener('click', checkAnswer)
-    form(action='/g/play', method='post')
-        input(type='submit', value='Save Score')
+    
