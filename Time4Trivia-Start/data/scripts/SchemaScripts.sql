@@ -51,6 +51,10 @@ create table if not exists Questions(
 create table if not exists Leaderboard(
     UserId int,
     Score int NOT NULL,
+	UserName text NOT NULL,
     PRIMARY KEY (UserId, Score),
     foreign key (UserId) references Users(UserId)
 );
+-- if UserName field does not work
+alter table Leaderboard
+ADD UserName text NOT NULL;

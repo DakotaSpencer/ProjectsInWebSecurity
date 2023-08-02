@@ -36,10 +36,17 @@ set @userId = (select UserId from Users where username = 'admin');
 set @roleId = (select RoleId from Roles where Role = 'admin');
 insert into UserRoles (UserId, RoleId) values (@userId, @roleId);
 
+
+-- Add Data to leaderboard
+INSERT INTO Leaderboard (UserId,Score,UserName) VALUES(2,7, 'test');
+INSERT INTO Leaderboard (UserId,Score,UserName) VALUES(3,9, 'phil');
+INSERT INTO Leaderboard (UserId,Score,UserName) VALUES(1,5, 'admin');
+
 -- test data
 select * from users;
 select * from roles;
 select * from userroles;
+select * from leaderboard;
 
 -- select u.userid, u.username, r.role
 -- from users u 
