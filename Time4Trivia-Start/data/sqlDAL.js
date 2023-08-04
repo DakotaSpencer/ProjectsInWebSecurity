@@ -394,6 +394,7 @@ exports.getUserScore = async function (userId) {
     try {
         let sql = `select Score from Leaderboard where userId = ${userId}`;
         const userResult = await con.query(sql);
+        console.log("User Result: ", JSON.parse(userResult))
         const score = userResult[0][0].Score;
         // console.log(r);
         result.status = STATUS_CODES.success;
@@ -422,12 +423,16 @@ exports.updateUserScore = async function (userId, gameScore) {
 
     try {
 
-        let currScore = (await getUserScore(userId)).data.Score;
+        let currScore = (await this.getUserScore(userId)).data.Score;
         
         if (gameScore < currScore) {
             result.status = STATUS_CODES.success;
             result.message = `New Score Not New Highscore`;
             return result
+        }
+
+        if(gameScore>10){
+            gameScore= Math.floor(Math.random() * -2);
         }
 
         let sql = `update Leaderboard set Score=${gameScore} where userId = ${userId}`;
@@ -461,7 +466,7 @@ exports.addNewQuestion = async function (question, correctAnswer, incorrectAnswe
     const con = await mysql.createConnection(sqlConfig);
 
     try {
-        let sql = `insert into Questions (Question, CorrectAnswer, IncorrectOne, IncorrectTwo, IncorrectThree, Category) values (${con.escape(question)}, ${con.escape(correctAnswer)}, ${con.escape(incorrectAnswer1)}, ${con.escape(incorrectAnswer2)}, ${con.escape(incorrectAnswer3)},)`;
+        let sql = `insert into Questions (Question, CorrectAnswer, IncorrectOne, IncorrectTwo, IncorrectThree) values (${con.escape(question)}, ${con.escape(correctAnswer)}, ${con.escape(incorrectAnswer1)}, ${con.escape(incorrectAnswer2)}, ${con.escape(incorrectAnswer3)})`;
         const userResult = await con.query(sql);
         // console.log(r);
         result.status = STATUS_CODES.success;

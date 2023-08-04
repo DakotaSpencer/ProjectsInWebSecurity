@@ -1,5 +1,5 @@
 const express = require('express');
-const { getLeaderboard } = require('../controllers/gameController');
+const { getLeaderboard, addQuestion } = require('../controllers/gameController');
 const router = express.Router();
 
 router.get('/', function(req, res, next) {
@@ -16,15 +16,18 @@ router.get('/leaderboard', async function(req, res, next) {
 });
 
 router.get('/submit', function(req, res, next){
-  let question={
-    query: req.body.question,
-    answers:[
-      {answer1: req.body.answers[0]},
-      {answer2: req.body.answers[1]},
-      {answer3: req.body.answers[2]},
-      {answer4: req.body.answers[3]},
-    ]
-  }
+  res.render('submit', {title: 'Add a Question - Time 4 Trivia', user: req.session.user, isAdmin: req.cookies.isAdmin})
+})
+
+router.post('/submit', async function(req, res, next){
+  let question = req.body.question;
+  let correctAnswer = req.body.correct_answer;
+  let ia1 = req.body.incorrect_one;
+  let ia2 = req.body.incorrect_two;
+  let ia3 = req.body.incorrect_three;
+  let quesResult = await addQuestion(question, correctAnswer, ia1, ia2, ia3)
+  console.log(quesResult);
+  res.redirect('/')
 })
 
 module.exports = router;
