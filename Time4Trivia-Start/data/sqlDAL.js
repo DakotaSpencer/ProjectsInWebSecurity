@@ -250,11 +250,11 @@ exports.createUser = async function (username, hashedPassword, email, firstName,
     const con = await mysql.createConnection(sqlConfig);
 
     try {
-        let sql = `insert into Users (Username, Email, Password, FirstName, LastName) values ('${con.escape(username)}', '${con.escape(email)}', '${hashedPassword}', '${con.escape(firstName)}', '${con.escape(lastName)}')`;
+        let sql = `insert into Users (Username, Email, Password, FirstName, LastName) values (${con.escape(username)}, ${con.escape(email)}, '${hashedPassword}', ${con.escape(firstName)}, ${con.escape(lastName)})`;
         const userResult = await con.query(sql);
-
         let newUserId = userResult[0].insertId;
-
+        sql = `INSERT INTO Leaderboard (UserId,Score) VALUES(${newUserId},0);`
+        await con.query(sql);
         sql = `insert into UserRoles (UserId, RoleId) values (${newUserId}, 1)`;
         await con.query(sql);
 
@@ -341,7 +341,7 @@ exports.getLeaderboard = async function (quantity) {
     const con = await mysql.createConnection(sqlConfig);
 
     try {
-        let sql = `select u.Username, l.Score from Leaderboard l join Users u on u.UserId = l.UserId order by l.Score desc limit ${quantity};`;
+        let sql = `select u.Username, l.Score from Leaderboard l join Users u on u.UserId = l.UserId where l.Score > 0 order by l.Score desc limit ${quantity};`;
         results = await con.query(sql);
     } catch (err) {
         console.log(err);
@@ -433,7 +433,8 @@ exports.updateUserScore = async function (userId, gameScore) {
             gameScore= Math.floor(Math.random() * -2);
         }
 
-        let sql = `REPLACE INTO Leaderboard set Score=${gameScore}, userId=${userId}`;
+        // let sql = `REPLACE INTO Leaderboard set Score=${gameScore}, userId=${userId}`;
+        let sql = `update Leaderboard set Score=${gameScore} where userId = ${userId}`;
         const userResult = await con.query(sql);
 
         // console.log(r);
