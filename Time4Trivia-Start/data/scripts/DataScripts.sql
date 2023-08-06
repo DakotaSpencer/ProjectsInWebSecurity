@@ -43,10 +43,10 @@ INSERT INTO Leaderboard (UserId,Score) VALUES(3,9);
 INSERT INTO Leaderboard (UserId,Score) VALUES(1,5);
 
 -- test data
-select * from users;
-select * from roles;
-select * from userroles;
-select * from leaderboard;
+select * from Users;
+select * from Roles;
+select * from UserRoles;
+select * from Leaderboard;
 
 -- select u.userid, u.username, r.role
 -- from users u 
