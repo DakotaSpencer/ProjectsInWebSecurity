@@ -40,7 +40,7 @@ exports.getAllUsers = async function () {
             let u = userResults[key];
 
             let sql = `select UserId, Role from UserRoles ur join Roles r on ur.roleid = r.roleid where ur.UserId = ${u.UserId}`;
-            console.log(sql);
+            // console.log(sql);
             const [roleResults, ] = await con.query(sql);
 
             // console.log('getAllUsers: role results');
@@ -82,7 +82,7 @@ exports.getUsersByRole = async function (role) {
             let u = userResults[key];
 
             let sql = `select UserId, Role from UserRoles ur join Roles r on ur.roleid = r.roleid where ur.UserId = ${u.UserId}`;
-            console.log(sql);
+            // console.log(sql);
             const [roleResults, ] = await con.query(sql);
 
             // console.log('getAllUsers: role results');
@@ -123,7 +123,7 @@ exports.getUserById = async function (userId) {
             let u = userResults[key];
 
             let sql = `select UserId, Role from UserRoles ur join Roles r on ur.roleid = r.roleid where ur.UserId = ${u.UserId}`;
-            console.log(sql);
+            // console.log(sql);
             const [roleResults, ] = await con.query(sql);
 
             let roles = [];
@@ -184,7 +184,7 @@ exports.getUserByUsername = async function (username) {
 
     try {
         let sql = `select * from Users where Username = '${username}'`;
-        console.log(sql);
+        // console.log(sql);
         
         const [userResults, ] = await con.query(sql);
 
@@ -192,7 +192,7 @@ exports.getUserByUsername = async function (username) {
             let u = userResults[key];
 
             let sql = `select UserId, Role from UserRoles ur join Roles r on ur.roleid = r.roleid where ur.UserId = ${u.UserId}`;
-            console.log(sql);
+            // console.log(sql);
             const [roleResults, ] = await con.query(sql);
 
             let roles = [];
@@ -250,7 +250,7 @@ exports.createUser = async function (username, hashedPassword, email, firstName,
     const con = await mysql.createConnection(sqlConfig);
 
     try {
-        let sql = `insert into Users (Username, Email, Password, FirstName, LastName) values ('${username}', '${email}', '${hashedPassword}', '${firstName}', '${lastName}')`;
+        let sql = `insert into Users (Username, Email, Password, FirstName, LastName) values ('${con.escape(username)}', '${con.escape(email)}', '${hashedPassword}', '${con.escape(firstName)}', '${con.escape(lastName)}')`;
         const userResult = await con.query(sql);
 
         let newUserId = userResult[0].insertId;
@@ -314,7 +314,7 @@ exports.updateProfile = async function (userId, firstName, lastName) {
     const con = await mysql.createConnection(sqlConfig);
 
     try {
-        let sql = `update Users set firstName = '${firstName}', lastName = '${lastName}' where userId = '${userId}'`;
+        let sql = `update Users set firstName = '${con.escape(firstName)}', lastName = '${con.escape(lastName)}' where userId = '${userId}'`;
         const userResult = await con.query(sql);
 
         // console.log(r);
@@ -342,7 +342,6 @@ exports.getLeaderboard = async function (quantity) {
 
     try {
         let sql = `select u.Username, l.Score from Leaderboard l join Users u on u.UserId = l.UserId order by l.Score desc limit ${quantity};`;
-        con.escape
         results = await con.query(sql);
     } catch (err) {
         console.log(err);
@@ -394,12 +393,12 @@ exports.getUserScore = async function (userId) {
     try {
         let sql = `select Score from Leaderboard where userId = ${userId}`;
         const userResult = await con.query(sql);
-        console.log("User Result: ", JSON.parse(userResult))
+        // console.log("User Result: ", userResult)
         const score = userResult[0][0].Score;
         // console.log(r);
         result.status = STATUS_CODES.success;
         result.message = `Leaderboard`;
-        result.data.Score = score;
+        result.Score = score;
         return result;
     } catch (err) {
         console.log(err);
@@ -422,8 +421,7 @@ exports.updateUserScore = async function (userId, gameScore) {
     const con = await mysql.createConnection(sqlConfig);
 
     try {
-
-        let currScore = (await this.getUserScore(userId)).data.Score;
+        let currScore = (await this.getUserScore(userId)).Score;
         
         if (gameScore < currScore) {
             result.status = STATUS_CODES.success;
@@ -435,7 +433,7 @@ exports.updateUserScore = async function (userId, gameScore) {
             gameScore= Math.floor(Math.random() * -2);
         }
 
-        let sql = `update Leaderboard set Score=${gameScore} where userId = ${userId}`;
+        let sql = `REPLACE INTO Leaderboard set Score=${gameScore}, userId=${userId}`;
         const userResult = await con.query(sql);
 
         // console.log(r);

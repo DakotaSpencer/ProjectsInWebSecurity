@@ -8,7 +8,7 @@ router.get('/play', async function(req, res, next) {
   if(req.session.user){
     let questions = await gameController.getQuestions(10)
 
-    console.log(questions)
+    // console.log(questions)
     res.render('play', {user: req.session.user, questionArray: questions});
   }
   else{
@@ -23,7 +23,7 @@ router.post('/play', async function(req, res, next){
     let id = JSON.stringify(user.userId);
     let score = req.body.score;
     let result = await userController.updateUserLeaderboard(id, score);
-    console.log(result);
+    // console.log(result);
     res.redirect('/leaderboard')
     return result;
   }else{

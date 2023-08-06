@@ -38,9 +38,9 @@ insert into UserRoles (UserId, RoleId) values (@userId, @roleId);
 
 
 -- Add Data to leaderboard
-INSERT INTO Leaderboard (UserId,Score,UserName) VALUES(2,7, 'test');
-INSERT INTO Leaderboard (UserId,Score,UserName) VALUES(3,9, 'phil');
-INSERT INTO Leaderboard (UserId,Score,UserName) VALUES(1,5, 'admin');
+INSERT INTO Leaderboard (UserId,Score) VALUES(2,7);
+INSERT INTO Leaderboard (UserId,Score) VALUES(3,9);
+INSERT INTO Leaderboard (UserId,Score) VALUES(1,5);
 
 -- test data
 select * from users;
