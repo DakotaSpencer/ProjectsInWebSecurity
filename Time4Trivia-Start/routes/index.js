@@ -1,5 +1,6 @@
 const express = require('express');
 const { getLeaderboard, addQuestion } = require('../controllers/gameController');
+const {getUnapprovedQuestions} = require('../controllers/questionController');
 const router = express.Router();
 
 router.get('/', function(req, res, next) {
@@ -27,6 +28,19 @@ router.post('/submit', async function(req, res, next){
   let quesResult = await addQuestion(question, correctAnswer, ia1, ia2, ia3)
   // console.log(quesResult);
   res.redirect('/')
+})
+
+router.get('/pending', async function(req, res, next){
+  let pendingQuestions = await getUnapprovedQuestions();
+  console.log(JSON.stringify(pendingQuestions))
+  res.render('pendingQuestions', {pendingQuestions})
+})
+
+router.post('/pending', async function(req, res){
+  let questionID = req.body.QuestionId;
+  let questionApprove = req.body.approveQuestion;
+  console.log(req.body)
+  console.log(typeof(questionApprove))
 })
 
 module.exports = router;

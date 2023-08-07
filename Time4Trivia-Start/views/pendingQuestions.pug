@@ -1,0 +1,25 @@
+extends layout 
+
+block content
+    if pendingQuestions[0]
+        h1 Pending Questions
+        each question, index  in pendingQuestions
+            div(style={'border': '1px solid black', 'padding': '2em', 'margin': '2em', 'text-align': 'center'})
+                
+                h1 Question # #{index}
+                h2 Question: #{question.Question}
+                h4 Correct Answer: 
+                p #{question.CorrectAnswer}
+                h4 Incorrect Answer: 
+                p #{question.IncorrectOne}
+                h4 Incorrect Answer: 
+                p #{question.IncorrectTwo}
+                h4 Incorrect Answer: 
+                p #{question.IncorrectThree}
+                form(action="/pending", method="post")
+                    input(type='hidden', value=`${question.QuestionId}` name="QuestionId" id="QuestionId")
+                    label Approve Question?
+                    input(type="checkbox" id="approveQuestion" name="approveQuestion")
+                    button(type="submit") Save
+    else 
+        h1 No Pending Questions
