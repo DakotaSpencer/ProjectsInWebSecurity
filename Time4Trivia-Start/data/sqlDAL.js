@@ -535,3 +535,31 @@ exports.getQuestions = async function (total) {
         return result;
     }
 }
+
+/**
+ * 
+ * @param {number} total
+ * @returns a result object with status/message
+ */
+exports.getAllUnapprovedQuestions = async function () {
+    let result = new Result();
+
+    const con = await mysql.createConnection(sqlConfig);
+
+    try {
+        let sql = `select * from Questions where Approved=false`;
+        const userResult = await con.query(sql);
+        let questions = userResult[0]
+        let jsonData = questions
+        // console.log(r);
+        result.status = STATUS_CODES.success;
+        result.message = `Questions`;
+        return jsonData;
+    } catch (err) {
+        console.log(err);
+
+        result.status = STATUS_CODES.failure;
+        result.message = err.message;
+        return result;
+    }
+}
