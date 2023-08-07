@@ -99,7 +99,9 @@ exports.login = async function (username, password) {
 
     let passwordsMatch = await bcrypt.compare(password, user.password); // does the given password match the user's hashed password?
 
-    if (passwordsMatch) {
+    let userEnabled = await sqlDAL.getIsUserEnabled(username);
+
+    if (passwordsMatch && userEnabled) {
         // console.log('Successful login for ' + username);
         // console.log(user);
 
@@ -116,6 +118,16 @@ exports.login = async function (username, password) {
  */
 exports.getUserById = function (userId) {
     return sqlDAL.getUserById(userId);
+}
+
+/**
+ * 
+ * @param {number} userId 
+ * @param {boolean} isEnabled
+ * @returns the matching user model or null
+ */
+exports.setUserIsEnabled = function (userId, isEnabled) {
+    return sqlDAL.setIsUserEnabled(userId, isEnabled);
 }
 
 /**

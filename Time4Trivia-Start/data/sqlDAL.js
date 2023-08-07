@@ -93,7 +93,12 @@ exports.getUsersByRole = async function (role) {
                 let role = roleResults[key];
                 roles.push(role.Role);
             }
-            users.push(new User(u.UserId, u.Username, u.Email, u.FirstName, u.LastName, u.Password, roles));
+            let userEnabled = "";
+            if (u.IsEnabled) {
+                userEnabled = true
+            }
+
+            users.push(new User(u.UserId, u.Username, u.Email, u.FirstName, u.LastName, u.Password, roles, userEnabled));
         }
     } catch (err) {
         console.log(err);
@@ -371,6 +376,33 @@ exports.setIsUserEnabled = async function (userId, isEnabled) {
         result.status = STATUS_CODES.success;
         result.message = `Account ID ${userId} IsEnabled set to ${isEnabled}`;
         return result;
+    } catch (err) {
+        console.log(err);
+
+        result.status = STATUS_CODES.failure;
+        result.message = err.message;
+        return result;
+    }
+}
+
+/**
+ * 
+ * @param {string} username
+ * @returns a result object with status/message
+ */
+exports.getIsUserEnabled = async function (username) {
+    let result = new Result();
+
+    const con = await mysql.createConnection(sqlConfig);
+
+    try {
+        let sql = `select IsEnabled from Users where Username = '${username}'`;
+        const userResult = await con.query(sql);
+        
+        // console.log(r);
+        // result.status = STATUS_CODES.success;
+        // result.isenabled = userResult[0][0].IsEnabled;
+        return userResult[0][0].IsEnabled;
     } catch (err) {
         console.log(err);
 

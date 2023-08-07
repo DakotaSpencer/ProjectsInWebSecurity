@@ -11,6 +11,7 @@ router.get('/users/:role', async function (req, res, next) {
     res.redirect('/');
   } else {
     let users = await userController.getUsers(role);
+    // console.log(users)
 
     res.render('users', { title: 'Time 4 Trivia', user: req.session.user, isAdmin: req.cookies.isAdmin, users: users });
   }
@@ -22,6 +23,20 @@ router.get('/delete/:userId', async function (req, res, next) {
   await userController.deleteUserById(userId);
 
   res.redirect('/');
+});
+
+router.post("/toggleuser", async function (req, res, next) {
+  
+  let userId = req.body.UserId;
+  let isEnabled = false;
+
+  if (req.body.CB) {
+    isEnabled = true
+  }
+
+  await userController.setUserIsEnabled(userId, isEnabled)
+
+  res.redirect('/a/users/user')
 });
 
 module.exports = router;
