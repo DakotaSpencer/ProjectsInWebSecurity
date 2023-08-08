@@ -524,7 +524,7 @@ exports.setQuestionApproved = async function (questionId, approved) {
     const con = await mysql.createConnection(sqlConfig);
 
     try {
-        let sql = `update Users set Approved=${approved} where userId = '${questionId}'`;
+        let sql = `update Questions set Approved=${approved} where QuestionId = '${questionId}'`;
         const userResult = await con.query(sql);
 
         // console.log(r);

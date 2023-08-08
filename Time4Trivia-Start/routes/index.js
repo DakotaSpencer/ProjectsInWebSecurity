@@ -1,6 +1,6 @@
 const express = require('express');
 const { getLeaderboard, addQuestion } = require('../controllers/gameController');
-const {getUnapprovedQuestions} = require('../controllers/questionController');
+const {getUnapprovedQuestions, approveQuestion} = require('../controllers/questionController');
 const router = express.Router();
 
 router.get('/', function(req, res, next) {
@@ -25,15 +25,19 @@ router.post('/submit', async function(req, res, next){
   let ia1 = req.body.incorrect_one;
   let ia2 = req.body.incorrect_two;
   let ia3 = req.body.incorrect_three;
-  let quesResult = await addQuestion(question, correctAnswer, ia1, ia2, ia3)
-  // console.log(quesResult);
+  await addQuestion(question, correctAnswer, ia1, ia2, ia3)
   res.redirect('/')
 })
 
 router.get('/pending', async function(req, res, next){
-  let pendingQuestions = await getUnapprovedQuestions();
-  console.log(JSON.stringify(pendingQuestions))
-  res.render('pendingQuestions', {pendingQuestions})
+  if(req.cookies.isAdmin=='yes'){
+    let pendingQuestions = await getUnapprovedQuestions();
+    console.log(JSON.stringify(pendingQuestions))
+    res.render('pendingQuestions', {title: 'Pending Questions - Time 4 Trivia', user: req.session.user, isAdmin: req.cookies.isAdmin, pendingQuestions})
+  }else{
+    res.redirect('/')
+  }
+
 })
 
 router.post('/pending', async function(req, res){
@@ -41,6 +45,12 @@ router.post('/pending', async function(req, res){
   let questionApprove = req.body.approveQuestion;
   console.log(req.body)
   console.log(typeof(questionApprove))
+  if(questionApprove){
+    await approveQuestion(questionID, 1);
+    res.redirect('/pending')
+  }else{
+    console.log("Unable to approve question. One or more paramaters may be missing.")
+  }
 })
 
 module.exports = router;

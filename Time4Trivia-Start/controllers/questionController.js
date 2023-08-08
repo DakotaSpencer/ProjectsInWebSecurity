@@ -12,3 +12,8 @@ exports.getUnapprovedQuestions = async function () {
     let results = await sqlDAL.getAllUnapprovedQuestions();
     return results;
 }
+
+exports.approveQuestion = async function(id, approved){
+    let results = await sqlDAL.setQuestionApproved(id, approved)
+    return results;
+}
