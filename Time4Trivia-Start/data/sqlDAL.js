@@ -4,21 +4,21 @@ const Result = require('../models/result').Result;
 const STATUS_CODES = require('../models/statusCodes').STATUS_CODES;
 
 const mysql = require('mysql2/promise');
-// const sqlConfig = {
-//     host: 'localhost',
-//     user: 'root',
-//     password: 'P@ssw0rd',
-//     database: 'Time4Trivia',
-//     multipleStatements: false
-// };
-
 const sqlConfig = {
-    host: '10.0.30.112',
-    user: 'groupone',
-    password: 'S3cur3P4assw0rd!',
+    host: 'localhost',
+    user: 'root',
+    password: 'P@ssw0rd',
     database: 'Time4Trivia',
     multipleStatements: false
 };
+
+// const sqlConfig = {
+//     host: '10.0.30.112',
+//     user: 'groupone',
+//     password: 'S3cur3P4assw0rd!',
+//     database: 'Time4Trivia',
+//     multipleStatements: false
+// };
 
 /**
  * @returns and array of user models
@@ -386,6 +386,40 @@ exports.setIsUserEnabled = async function (userId, isEnabled) {
         let sql = `update Users set IsEnabled=${isEnabled} where userId = '${userId}'`;
         const userResult = await con.query(sql);
 
+        // console.log(r);
+        result.status = STATUS_CODES.success;
+        result.message = `Account ID ${userId} IsEnabled set to ${isEnabled}`;
+        return result;
+    } catch (err) {
+        console.log(err);
+
+        result.status = STATUS_CODES.failure;
+        result.message = err.message;
+        return result;
+    }
+}
+
+/**
+ * 
+ * @param {number} userId
+ * @param {boolean} isAdmin
+ * @returns a result object with status/message
+ */
+exports.setUserIsAdmin = async function (userId, isAdmin) {
+    let result = new Result();
+
+    const con = await mysql.createConnection(sqlConfig);
+
+    try {
+        let sql = ``;
+
+        if (isAdmin){
+            sql = `update UserRoles set RoleId=2 where userId = '${userId}'`;
+        } else {
+            sql = `update UserRoles set RoleId=1 where userId = '${userId}'`;
+        }
+        const userResult = await con.query(sql);
+        console.log(sql)
         // console.log(r);
         result.status = STATUS_CODES.success;
         result.message = `Account ID ${userId} IsEnabled set to ${isEnabled}`;

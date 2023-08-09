@@ -29,17 +29,17 @@ router.post("/toggleuser", async function (req, res, next) {
   
   let userId = req.body.UserId;
   let isEnabled = false;
-  let isAdmin = false;
   if (req.body.CBE) {
     isEnabled = true
   }
-
+  
+  let isAdmin = false;
   if (req.body.CBA) {
     isAdmin = true
   }
   await userController.setUserIsEnabled(userId, isEnabled)
   // if userids match session do not work
-  if ((req.session.user.userId == userId) && req.session.isAdmin) {
+  if ((req.session.user.userId != userId) && req.session.isAdmin) {
     await userController.setUserIsAdmin(userId, isAdmin)
   }
 
