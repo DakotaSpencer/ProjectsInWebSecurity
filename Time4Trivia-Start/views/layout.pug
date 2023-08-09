@@ -8,7 +8,7 @@ html
       a(class='', href='/') Home
       a(class='bn', href='/leaderboard') Leaderboard
       if user
-        if isAdmin == 'yes'
+        if isAdmin
           a(class='', href='/a/users/user') Users
           a(class='', href='/pending') Pending ?
         a(class='', href='/g/play') Play
