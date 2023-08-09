@@ -4,21 +4,21 @@ const Result = require('../models/result').Result;
 const STATUS_CODES = require('../models/statusCodes').STATUS_CODES;
 
 const mysql = require('mysql2/promise');
-const sqlConfig = {
-    host: 'localhost',
-    user: 'root',
-    password: 'P@ssw0rd',
-    database: 'Time4Trivia',
-    multipleStatements: false
-};
-
 // const sqlConfig = {
-//     host: '10.0.30.112',
-//     user: 'groupone',
-//     password: 'S3cur3P4assw0rd!',
+//     host: 'localhost',
+//     user: 'root',
+//     password: 'P@ssw0rd',
 //     database: 'Time4Trivia',
 //     multipleStatements: false
 // };
+
+const sqlConfig = {
+    host: '10.0.30.112',
+    user: 'groupone',
+    password: 'S3cur3P4assw0rd!',
+    database: 'Time4Trivia',
+    multipleStatements: false
+};
 
 /**
  * @returns and array of user models
