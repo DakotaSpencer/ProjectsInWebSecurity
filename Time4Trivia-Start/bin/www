@@ -6,20 +6,32 @@
 
 var app = require('../app');
 var debug = require('debug')('trivia-time-base:server');
-var http = require('http');
+const https = require("https");
+const fs = require("fs");
 
 /**
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '3000');
+var port = normalizePort(process.env.PORT || '443');
 app.set('port', port);
 
 /**
- * Create HTTP server.
+ * Create HTTPS server.
  */
 
-var server = http.createServer(app);
+// var server = http.createServer(app);
+
+var server = https
+  .createServer(
+		// Provide the private and public key to the server by reading each
+		// file's content with the readFileSync() method.
+    {
+      key: fs.readFileSync("key.pem"),
+      cert: fs.readFileSync("cert.pem"),
+    },
+    app
+  );
 
 /**
  * Listen on provided port, on all network interfaces.
