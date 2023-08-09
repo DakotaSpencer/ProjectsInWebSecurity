@@ -57,7 +57,7 @@ exports.getAllUsers = async function () {
                 }
             }
             let userEnabled = "";
-            console.log(u)
+            // console.log(u)
             if (u.IsEnabled) {
                 userEnabled = true
             }
@@ -68,7 +68,7 @@ exports.getAllUsers = async function () {
     }finally{
         con.end();
     }
-    console.log(users)
+    // console.log(users)
     return users;
 }
 
@@ -96,7 +96,7 @@ exports.getUsersByRole = async function (role) {
             const [roleResults, ] = await con.query(sql);
 
             // console.log('getAllUsers: role results');
-            console.log(roleResults);
+            // console.log(roleResults);
 
             let roles = [];
             for(key in roleResults){

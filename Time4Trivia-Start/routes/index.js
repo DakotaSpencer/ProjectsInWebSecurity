@@ -36,7 +36,7 @@ router.post('/submit', async function(req, res, next){
 router.get('/pending', async function(req, res, next){
   if(req.session.isAdmin){
     let pendingQuestions = await getUnapprovedQuestions();
-    console.log(JSON.stringify(pendingQuestions))
+    // console.log(JSON.stringify(pendingQuestions))
     res.render('pendingQuestions', {title: 'Pending Questions - Time 4 Trivia', user: req.session.user, isAdmin: req.session.isAdmin, pendingQuestions})
   }else{
     res.redirect('/')
@@ -47,8 +47,8 @@ router.get('/pending', async function(req, res, next){
 router.post('/pending', async function(req, res){
   let questionID = req.body.QuestionId;
   let questionApprove = req.body.approveQuestion;
-  console.log(req.body)
-  console.log(typeof(questionApprove))
+  // console.log(req.body)
+  // console.log(typeof(questionApprove))
   if(questionApprove){
     await approveQuestion(questionID, 1);
     res.redirect('/pending')
