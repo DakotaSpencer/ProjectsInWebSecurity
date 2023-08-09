@@ -16,7 +16,11 @@ router.get('/leaderboard', async function(req, res, next) {
 });
 
 router.get('/submit', function(req, res, next){
-  res.render('submit', {title: 'Add a Question - Time 4 Trivia', user: req.session.user, isAdmin: req.session.isAdmin})
+  if(req.session.user){
+    res.render('submit', {title: 'Add a Question - Time 4 Trivia', user: req.session.user, isAdmin: req.session.isAdmin})
+  }else {
+    res.redirect("/")
+  }
 })
 
 router.post('/submit', async function(req, res, next){
