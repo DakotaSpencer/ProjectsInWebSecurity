@@ -6,18 +6,18 @@ block content
         label(class='error') #{error}
     form(action='/u/register', method='post')
         label Username:
-        input(type='text', name='username')
+        input(type='text', name='username', required,)
         br
         label Email:
-        input(type='text', name='email')
+        input(type='text', name='email', required,)
         br
         label First Name:
-        input(type='text', name='firstName')
+        input(type='text', name='firstName', required,)
         br
         label Last Name:
-        input(type='text', name='lastName')
+        input(type='text', name='lastName', required,)
         br
         label Password:
-        input(type='password', name='password')
+        input(type='password', name='password', required,)
         br
-        input(type='submit', value='register')
+        input(type='submit', value='register', required,)

@@ -6,17 +6,17 @@ const router = express.Router();
 router.get('/', function(req, res, next) {
   // console.log(req.session.user);
   // console.log("/ cookies", req.cookies);
-  res.render('index', { title: 'Time 4 Trivia', user: req.session.user, isAdmin: req.cookies.isAdmin });
+  res.render('index', { title: 'Time 4 Trivia', user: req.session.user, isAdmin: req.session.isAdmin });
 });
 
 router.get('/leaderboard', async function(req, res, next) {
   let leaderboard = (await getLeaderboard(10))[0]
   // console.log(JSON.stringify(leaderboard))
-  res.render('leaderboard', { title: 'Time 4 Trivia', user: req.session.user, isAdmin: req.cookies.isAdmin, leaders: leaderboard });
+  res.render('leaderboard', { title: 'Time 4 Trivia', user: req.session.user, isAdmin: req.session.isAdmin, leaders: leaderboard });
 });
 
 router.get('/submit', function(req, res, next){
-  res.render('submit', {title: 'Add a Question - Time 4 Trivia', user: req.session.user, isAdmin: req.cookies.isAdmin})
+  res.render('submit', {title: 'Add a Question - Time 4 Trivia', user: req.session.user, isAdmin: req.session.isAdmin})
 })
 
 router.post('/submit', async function(req, res, next){
@@ -30,10 +30,10 @@ router.post('/submit', async function(req, res, next){
 })
 
 router.get('/pending', async function(req, res, next){
-  if(req.cookies.isAdmin=='yes'){
+  if(req.session.isAdmin){
     let pendingQuestions = await getUnapprovedQuestions();
     console.log(JSON.stringify(pendingQuestions))
-    res.render('pendingQuestions', {title: 'Pending Questions - Time 4 Trivia', user: req.session.user, isAdmin: req.cookies.isAdmin, pendingQuestions})
+    res.render('pendingQuestions', {title: 'Pending Questions - Time 4 Trivia', user: req.session.user, isAdmin: req.session.isAdmin, pendingQuestions})
   }else{
     res.redirect('/')
   }

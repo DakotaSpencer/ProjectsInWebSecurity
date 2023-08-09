@@ -4,21 +4,21 @@ const Result = require('../models/result').Result;
 const STATUS_CODES = require('../models/statusCodes').STATUS_CODES;
 
 const mysql = require('mysql2/promise');
-const sqlConfig = {
-    host: 'localhost',
-    user: 'root',
-    password: 'P@ssw0rd',
-    database: 'Time4Trivia',
-    multipleStatements: false
-};
-
 // const sqlConfig = {
-//     host: '10.0.30.112',
-//     user: 'groupone',
-//     password: 'S3cur3P4assw0rd!',
+//     host: 'localhost',
+//     user: 'root',
+//     password: 'P@ssw0rd',
 //     database: 'Time4Trivia',
 //     multipleStatements: false
 // };
+
+const sqlConfig = {
+    host: '10.0.30.112',
+    user: 'groupone',
+    password: 'S3cur3P4assw0rd!',
+    database: 'Time4Trivia',
+    multipleStatements: false
+};
 
 /**
  * @returns and array of user models
@@ -47,18 +47,28 @@ exports.getAllUsers = async function () {
             // console.log(roleResults);
 
             let roles = [];
+            let isAdmin = "";
+            
             for(key in roleResults){
                 let role = roleResults[key];
                 roles.push(role.Role);
+                if (role.Role == "admin"){
+                    isAdmin = true
+                }
             }
-            users.push(new User(u.UserId, u.Username, u.Email, u.FirstName, u.LastName, u.Password, roles));
+            let userEnabled = "";
+            console.log(u)
+            if (u.IsEnabled) {
+                userEnabled = true
+            }
+            users.push(new User(u.UserId, u.Username, u.Email, u.FirstName, u.LastName, u.Password, roles, userEnabled, isAdmin));
         }
     } catch (err) {
         console.log(err);
     }finally{
         con.end();
     }
-
+    console.log(users)
     return users;
 }
 
@@ -86,7 +96,7 @@ exports.getUsersByRole = async function (role) {
             const [roleResults, ] = await con.query(sql);
 
             // console.log('getAllUsers: role results');
-            // console.log(roleResults);
+            console.log(roleResults);
 
             let roles = [];
             for(key in roleResults){
@@ -97,8 +107,12 @@ exports.getUsersByRole = async function (role) {
             if (u.IsEnabled) {
                 userEnabled = true
             }
+            let isAdmin = "";
+            // if (u.) {
+            //     isAdmin = true
+            // }
 
-            users.push(new User(u.UserId, u.Username, u.Email, u.FirstName, u.LastName, u.Password, roles, userEnabled));
+            users.push(new User(u.UserId, u.Username, u.Email, u.FirstName, u.LastName, u.Password, roles, userEnabled, isAdmin));
         }
     } catch (err) {
         console.log(err);

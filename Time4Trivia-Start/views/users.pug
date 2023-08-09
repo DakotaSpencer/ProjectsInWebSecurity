@@ -13,11 +13,19 @@ block content
         form(action="/a/toggleuser", method="post") 
           label IsUserEnabled:
           if user.isEnabled
-            input(type='checkbox', name=`CB`, checked)
+            input(type='checkbox', name=`CBE`, checked)
           else
-            input(type='checkbox', name=`CB`)
+            input(type='checkbox', name=`CBE`)
+          br
+          label IsAdmin:
+          if user.isAdmin
+            input(type='checkbox', name=`CBA`, checked)
+          else
+            input(type='checkbox', name=`CBA`)
           input(type="hidden", name="UserId", value= `${user.userId}`)
-          input(type="submit", value="Submit")
+          br
+          input(type="submit", value="Save User")
+          
         br
         h3 Roles
         ul

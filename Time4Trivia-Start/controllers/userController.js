@@ -9,7 +9,7 @@ const STATUS_CODES = require('../models/statusCodes').STATUS_CODES;
  * @returns an array of user models
  */
 exports.getUsers = async function (role = 'user') {
-    let results = await sqlDAL.getUsersByRole(role);
+    let results = await sqlDAL.getAllUsers();
     // console.log('getUsers');
     // console.log(results);
     return results;
@@ -128,6 +128,16 @@ exports.getUserById = function (userId) {
  */
 exports.setUserIsEnabled = function (userId, isEnabled) {
     return sqlDAL.setIsUserEnabled(userId, isEnabled);
+}
+
+/**
+ * 
+ * @param {number} userId 
+ * @param {boolean} isAdmin
+ * @returns the matching user model or null
+ */
+exports.setUserIsAdmin = function (userId, isAdmin) {
+    return sqlDAL.setUserIsAdmin(userId, isAdmin);
 }
 
 /**

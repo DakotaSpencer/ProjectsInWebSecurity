@@ -1,5 +1,5 @@
 class User{
-    constructor(userId, username, email, firstName, lastName, password, roles, isEnabled){
+    constructor(userId, username, email, firstName, lastName, password, roles, isEnabled, isAdmin){
         this.userId = userId;
         this.username = username;
         this.email = email;
@@ -8,6 +8,7 @@ class User{
         this.password = password;
         this.roles = roles;
         this.isEnabled = isEnabled;
+        this.isAdmin = isAdmin;
     }
 }
 

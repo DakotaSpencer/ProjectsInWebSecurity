@@ -38,9 +38,10 @@ router.post('/login', async function (req, res, next) {
   if (result?.status == STATUS_CODES.success) {
     let isAdmin = result.data.roles.includes('admin')
     if(isAdmin){
-      res.cookie('isAdmin', 'yes');
+      // res.cookie('isAdmin', 'yes');
+      req.session.isAdmin = true
     }else{
-      res.cookie('isAdmin', 'no');
+      // res.cookie('isAdmin', 'no');
     }
 
     req.session.user = { 
@@ -76,14 +77,14 @@ router.post('/profile', async function (req, res, next) {
   let lastName = req.body.lastName;
 
   if (!firstName || firstName == "" || !lastName || lastName == "") {
-    res.render('profile', { title: 'Time 4 Trivia', user: req.session.user, isAdmin: req.cookies.isAdmin, error: 'First and Last name are required.' });
+    res.render('profile', { title: 'Time 4 Trivia', user: req.session.user, isAdmin: req.session.isAdmin, error: 'First and Last name are required.' });
   } else {
     let result = await userController.updateProfile(req.session.user.userId, firstName, lastName);
     if (result.status == STATUS_CODES.success) {
       let user = await userController.getUserById(req.session.user.userId);
       res.render('profile', { title: 'Time 4 Trivia', user: user, msg: 'Profile updated' });
     } else {
-      res.render('profile', { title: 'Time 4 Trivia', user: req.session.user, isAdmin: req.cookies.isAdmin, error: 'Profile failed to update' });
+      res.render('profile', { title: 'Time 4 Trivia', user: req.session.user, isAdmin: req.session.isAdmin, error: 'Profile failed to update' });
     }
   }
 });
@@ -94,13 +95,13 @@ router.post('/updatePassword', async function (req, res, next) {
   let new2 = req.body.confirmPassword;
 
   if (new1 != new2) {
-    res.render('profile', { title: 'Time 4 Trivia', user: req.session.user, isAdmin: req.cookies.isAdmin, pwdError: 'Password do not match' });
+    res.render('profile', { title: 'Time 4 Trivia', user: req.session.user, isAdmin: req.session.isAdmin, pwdError: 'Password do not match' });
   } else {
     let result = await userController.updateUserPassword(req.session.user.userId, current, new1, new2);
     if (result.status == STATUS_CODES.success) {
       res.redirect('/u/login');
     } else {
-      res.render('profile', { title: 'Time 4 Trivia', user: req.session.user, isAdmin: req.cookies.isAdmin, pwdError: 'Password update failed' });
+      res.render('profile', { title: 'Time 4 Trivia', user: req.session.user, isAdmin: req.session.isAdmin, pwdError: 'Password update failed' });
     }
   }
 });
