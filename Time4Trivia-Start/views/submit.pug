@@ -4,22 +4,27 @@ block content
   div 
     h1 Submit a Question 
       form(action="/submit", method="post") 
-        label 
+        label(class='smalllabel') Question
+        br
         input(type='text', name='question', placeholder='Input your questions here...', required, )
         br
-        label
+        label(class='smalllabel') Correct Answer
+        br
         input(type='text', name='correct_answer', placeholder='Input the correct answer here...', required, )
         br
-        label
+        label(class='smalllabel') Incorrect Answer
+        br
         input(type='text', name='incorrect_one', placeholder='Input an incorrect answer here...', required, )
         br
-        label
+        label(class='smalllabel') Incorrect Answer
+        br
         input(type='text', name='incorrect_two', placeholder='Input an incorrect answer here...', required, )
         br
-        label
+        label(class='smalllabel') Incorrect Answer
+        br
         input(type='text', name='incorrect_three', placeholder='Input an incorrect answer here...', required, )
         br
-        label
+        label(class='smalllabel')
         input(type='submit', value='Submit')
 
         br
