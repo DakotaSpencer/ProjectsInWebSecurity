@@ -5,10 +5,10 @@ block content
   table
     thead
       tr
-        th Username
+        th User
         th Score
     tbody
       each val in leaders
         tr
-          td= val.Username
+          td= val.firstname + ' ' + val.lastname
           td= val.Score
