@@ -360,7 +360,7 @@ exports.getLeaderboard = async function (quantity) {
     const con = await mysql.createConnection(sqlConfig);
 
     try {
-        let sql = `select u.Username, l.Score from Leaderboard l join Users u on u.UserId = l.UserId where l.Score > 0 order by l.Score desc limit ${quantity};`;
+        let sql = `select u.firstname, u.lastname, l.Score from Leaderboard l join Users u on u.UserId = l.UserId where l.Score > 0 order by l.Score desc limit ${quantity};`;
         results = await con.query(sql);
     } catch (err) {
         console.log(err);
