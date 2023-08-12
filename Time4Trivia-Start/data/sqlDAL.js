@@ -422,7 +422,7 @@ exports.setUserIsAdmin = async function (userId, isAdmin) {
         console.log(sql)
         // console.log(r);
         result.status = STATUS_CODES.success;
-        result.message = `Account ID ${userId} IsEnabled set to ${isEnabled}`;
+        result.message = `Account ID ${userId} role Admin is ${isAdmin}`;
         return result;
     } catch (err) {
         console.log(err);
