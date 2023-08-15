@@ -14,8 +14,14 @@ router.post('/register', async function (req, res, next) {
   let firstName = req.body.firstName;
   let lastName = req.body.lastName;
   let password = req.body.password;
-
-  let result = await userController.createUser(username, email, firstName, lastName, password);
+  let result = null;
+  try {
+    result = await userController.createUser(username, email, firstName, lastName, password);
+  } catch (error) {
+    res.render('register', { title: 'Time 4 Trivia', error: 'Register Failed' });
+    return;
+  }
+  
 
   if (result?.status == STATUS_CODES.success) {
     res.redirect('/u/login');

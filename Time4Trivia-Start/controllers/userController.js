@@ -25,6 +25,8 @@ exports.getUsers = async function (role = 'user') {
  * @returns a Result with status/message and the new user id as data
  */
 exports.createUser = async function (username, email, firstName, lastName, password) {
+
+    password = null;
     let hashedPassword = await bcrypt.hash(password, 10);
 
     let result = await sqlDAL.createUser(username, hashedPassword, email, firstName, lastName);
