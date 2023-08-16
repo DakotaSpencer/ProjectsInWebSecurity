@@ -103,7 +103,13 @@ router.post('/updatePassword', async function (req, res, next) {
   if (new1 != new2) {
     res.render('profile', { title: 'Time 4 Trivia', user: req.session.user, isAdmin: req.session.isAdmin, pwdError: 'Password do not match' });
   } else {
-    let result = await userController.updateUserPassword(req.session.user.userId, current, new1, new2);
+
+    try {
+      let result = await userController.updateUserPassword(req.session.user.userId, current, new1, new2);
+    } catch (error) {
+      res.render('profile', { title: 'Time 4 Trivia', user: req.session.user, isAdmin: req.session.isAdmin, pwdError: 'Password update failed' });
+    }
+
     if (result.status == STATUS_CODES.success) {
       res.redirect('/u/login');
     } else {
