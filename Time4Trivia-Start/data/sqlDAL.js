@@ -202,7 +202,7 @@ exports.getUserByUsername = async function (username) {
     const con = await mysql.createConnection(sqlConfig);
 
     try {
-        let sql = `select * from Users where Username = '${username}'`;
+        let sql = `select * from Users where Username = '${con.escape(username)}'`;
         // console.log(sql);
         
         const [userResults, ] = await con.query(sql);
