@@ -202,7 +202,7 @@ exports.getUserByUsername = async function (username) {
     const con = await mysql.createConnection(sqlConfig);
 
     try {
-        let sql = `select * from Users where Username = '${con.escape(username)}'`;
+        let sql = `select * from Users where Username = ${con.escape(username)}`;
         // console.log(sql);
         
         const [userResults, ] = await con.query(sql);
@@ -333,7 +333,7 @@ exports.updateProfile = async function (userId, firstName, lastName) {
     const con = await mysql.createConnection(sqlConfig);
 
     try {
-        let sql = `update Users set firstName = '${con.escape(firstName)}', lastName = '${con.escape(lastName)}' where userId = '${userId}'`;
+        let sql = `update Users set firstName = ${con.escape(firstName)}, lastName = ${con.escape(lastName)} where userId = '${userId}'`;
         const userResult = await con.query(sql);
 
         // console.log(r);
